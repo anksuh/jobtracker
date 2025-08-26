@@ -1,0 +1,18 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Job Applications</title>
+</head>
+<body>
+  <h1>Job Applications</h1>
+  <ul>
+    {% for app in applications %}
+      <li><strong>{{ app.company }}</strong> — {{ app.position }} ({{ app.status }}) on {{ app.date_applied }}</li>
+    {% empty %}
+      <li>No applications yet.</li>
+    {% endfor %}
+  </ul>
+  <p><a href="/">Back to Home</a></p>
+</body>
+</html>
