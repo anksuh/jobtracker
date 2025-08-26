@@ -6,13 +6,17 @@
 </head>
 <body>
   <h1>Job Applications</h1>
+<p><a href="/applications/new/">+ Add Application</a></p>
+
   <ul>
     {% for app in applications %}
-      <li><strong>{{ app.company }}</strong> — {{ app.position }} ({{ app.status }}) on {{ app.date_applied }}</li>
+      <li>
+        <strong>{{ app.company }}</strong> — {{ app.position }} ({{ app.status }}) on {{ app.date_applied }}
+        — <a href="{% url 'application_edit' pk=app.pk %}">Edit</a>
+        — <a href="{% url 'application_delete' pk=app.pk %}">Delete</a>
+      </li>
     {% empty %}
       <li>No applications yet.</li>
     {% endfor %}
   </ul>
-  <p><a href="/">Back to Home</a></p>
-</body>
-</html>
+
