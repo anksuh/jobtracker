@@ -1,0 +1,14 @@
+{% extends "tracker/base.html" %}
+{% block title %}Log in · Job Tracker{% endblock %}
+{% block content %}
+<h1 class="h3 mb-3">Log in</h1>
+<form method="post" class="card p-3" action="{% url 'login' %}">
+  {% csrf_token %}
+  {{ form.as_p }}
+  <button type="submit" class="btn btn-primary">Log in</button>
+  <a class="btn btn-outline-secondary ms-2" href="/">Cancel</a>
+</form>
+<p class="mt-3">No account? <a href="{% url 'signup' %}">Sign up</a></p>
+{% endblock %}
+
+

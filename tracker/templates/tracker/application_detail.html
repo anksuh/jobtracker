@@ -1,0 +1,84 @@
+{% extends "tracker/base.html" %}
+{% block title %}{{ app.company }} – {{ app.position }} · Job Tracker{% endblock %}
+{% block content %}
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h1 class="h4 mb-0">{{ app.company }} — {{ app.position }}</h1>
+    <div>
+      <a class="btn btn-outline-secondary btn-sm" href="{% url 'application_edit' pk=app.pk %}">Edit</a>
+      <a class="btn btn-outline-danger btn-sm ms-2" href="{% url 'application_delete' pk=app.pk %}">Delete</a>
+      <a class="btn btn-primary btn-sm ms-2" href="{% url 'interview_create' application_pk=app.pk %}">+ Add Interview</a>
+    </div>
+  </div>
+
+  <div class="row g-3 mb-3">
+    <div class="col-md-3">
+      <div class="card"><div class="card-body">
+        <div class="text-muted">Status</div>
+        <div class="fs-5">{{ app.status }}</div>
+      </div></div>
+    </div>
+    <div class="col-md-3">
+      <div class="card"><div class="card-body">
+        <div class="text-muted">Rounds</div>
+        <div class="fs-5">{{ app.rounds|default:"0" }}</div>
+      </div></div>
+    </div>
+    <div class="col-md-3">
+      <div class="card"><div class="card-body">
+        <div class="text-muted">Salary Offered</div>
+        <div class="fs-5">{{ app.salary_offered|default:"—" }}</div>
+      </div></div>
+    </div>
+    <div class="col-md-3">
+      <div class="card"><div class="card-body">
+        <div class="text-muted">Applied</div>
+        <div class="fs-5">{{ app.date_applied }}</div>
+      </div></div>
+    </div>
+  </div>
+
+  {% if app.job_url %}
+    <p>Job link: <a href="{{ app.job_url }}" target="_blank" rel="noopener">{{ app.job_url }}</a></p>
+  {% endif %}
+  {% if app.rejection_reason %}
+    <p><strong>Reason for rejection:</strong> {{ app.rejection_reason }}</p>
+  {% endif %}
+  {% if app.notes %}
+    <p><strong>Notes:</strong> {{ app.notes }}</p>
+  {% endif %}
+
+  <h2 class="h5 mt-4">Interviews</h2>
+  <div class="card">
+    <div class="card-body p-0">
+      <table class="table mb-0">
+        <thead class="table-light">
+          <tr>
+            <th>Round</th><th>Date</th><th>Format</th><th>Notes</th><th>Questions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for iv in interviews %}
+            <tr>
+              <td>{{ iv.round_number }}</td>
+              <td>{{ iv.date|default:"—" }}</td>
+              <td>{{ iv.format }}</td>
+              <td>{{ iv.notes|default:"" }}</td>
+              <td>
+                <ul class="mb-0">
+                  {% for q in iv.questions.all %}
+                    <li>{{ q.question_text }}{% if q.topic %} <span class="text-muted">({{ q.topic }})</span>{% endif %}</li>
+                  {% empty %}
+                    <li class="text-muted">No questions recorded</li>
+                  {% endfor %}
+                </ul>
+              </td>
+            </tr>
+          {% empty %}
+            <tr><td colspan="5" class="text-center text-muted py-4">No interviews yet.</td></tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+{% endblock %}
+
